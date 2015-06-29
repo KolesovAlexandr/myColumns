@@ -45,8 +45,17 @@ public class Controller implements ModelListener {
 	}
 
 	public boolean fullField() {
-		// TODO Auto-generated method stub
 		return _model.fullField();
+	}
+
+	public void levelUp() {
+		_model.levelUp();
+		
+	}
+
+	public void levelDown() {
+		_model.levelDown();
+		
 	}
 
 

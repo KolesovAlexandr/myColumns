@@ -1,8 +1,12 @@
 package MyGameColumns;
 
 public class Logic {
+	private static final int MAXLEVEL = 7;
+	private static final int FIGTODROP = 33;
 	State _state;
+	
 	private int DSCore;
+	private int k;
 
 	public Logic(State state) {
 		_state = state;
@@ -10,7 +14,7 @@ public class Logic {
 
 	public boolean moveRight() {
 		_state.col++;
-		if (!isFigureFitsField()) {
+		if (!isFigureFitsField() | fullField()) {
 			_state.col--;
 			return false;
 		}
@@ -19,8 +23,9 @@ public class Logic {
 
 	public boolean moveLeft() {
 		_state.col--;
-		if (!isFigureFitsField()) {
+		if (!isFigureFitsField() | fullField()) {
 			_state.col++;
+
 			return false;
 		}
 		return true;
@@ -30,6 +35,11 @@ public class Logic {
 		_state.row++;
 		if (!isFigureFitsField()) {
 			_state.row--;
+
+			if (fullField()) {
+				_state.gameOver();
+				return false;
+			}
 			pasteFigure();
 			if (testField()) {
 				PackField();
@@ -40,10 +50,43 @@ public class Logic {
 		return true;
 	}
 
+	public void cyclePositionUp() {
+		int[] data = _state._figure._data;
+		int[] tmpData = new int[data.length];
+		if (fullField()) {
+			return;
+		}
+		for (int i = 0; i < data.length; i++) {
+			int j = (i + 1) % data.length;
+			tmpData[i] = data[j];
+		}
+		for (int i = 0; i < data.length; i++) {
+			data[i] = tmpData[i];
+		}
+
+	}
+
+	public void cyclePositionDown() {
+		int[] data = _state._figure._data;
+		int[] tmpData = new int[data.length];
+		if (fullField()) {
+			return;
+		}
+		for (int i = 0; i < data.length; i++) {
+			int j = (i + data.length - 1) % data.length;
+			tmpData[i] = data[j];
+		}
+		for (int i = 0; i < data.length; i++) {
+			data[i] = tmpData[i];
+		}
+
+	}
+
 	public void dropDown() {
 		int Depth = _state._field._data.length;
 		int zz = Depth;
 		int level = _state.level;
+
 		do {
 			_state.row++;
 			zz--;
@@ -51,14 +94,17 @@ public class Logic {
 		if (!isFigureFitsField()) {
 			zz++;
 			_state.row--;
-			DSCore = (((level + 1)
-					* (Depth * 2 - _state.row - zz) * 2) % 5) * 5;
+			DSCore = (((level + 1) * (Depth * 2 - _state.row - zz) * 2) % 5) * 5;
+			if (fullField()) {
+				_state.gameOver();
+				return;
+			}
 			pasteFigure();
 			if (testField()) {
 				PackField();
 				_state.score += DSCore;
 			}
-			
+
 			newFigure();
 		}
 	}
@@ -103,6 +149,7 @@ public class Logic {
 		if ((data[r][c] == data[r1][c1]) && (data[r][c] == data[r2][c2])) {
 			data[r][c] = data[r1][c1] = data[r2][c2] = 0;
 			_state.score += (_state.level + 1) * 10;
+			k++;
 			return true;
 		}
 		return false;
@@ -159,34 +206,10 @@ public class Logic {
 		for (int r = 0; r < figureData.length; r++) {
 			fieldData[_state.row + r][_state.col] = figureData[r];
 		}
-		
-
-	}
-
-	public void cyclePositionUp() {
-		int[] data = _state._figure._data;
-		int[] tmpData = new int[data.length];
-
-		for (int i = 0; i < data.length; i++) {
-			int j = (i + 1) % data.length;
-			tmpData[i] = data[j];
-		}
-		for (int i = 0; i < data.length; i++) {
-			data[i] = tmpData[i];
-		}
-
-	}
-
-	public void cyclePositionDown() {
-		int[] data = _state._figure._data;
-		int[] tmpData = new int[data.length];
-
-		for (int i = 0; i < data.length; i++) {
-			int j = (i + data.length - 1) % data.length;
-			tmpData[i] = data[j];
-		}
-		for (int i = 0; i < data.length; i++) {
-			data[i] = tmpData[i];
+		if (k>=FIGTODROP){
+			if (_state.level<MAXLEVEL) {
+				levelUp();
+			}
 		}
 
 	}
@@ -218,4 +241,18 @@ public class Logic {
 		return null;
 	}
 
+	public void levelUp() {
+		if (_state.level < MAXLEVEL) {
+			_state.level++;
+		}
+
+	}
+
+	public void levelDown() {
+		if (_state.level > 0) {
+			_state.level--;
+
+		}
+
+	}
 }

@@ -6,7 +6,17 @@ public class State implements Cloneable {
 	Field _field;
 	int row,col;
 	int level,score;
+	public int getLevel() {
+		return level;
+	}
+	boolean _gameOver = false;
 
+	public boolean is_gameOver() {
+		return _gameOver;
+	}
+	public void gameOver() {
+		_gameOver = true;
+	}
 	public Figure getFigure() {
 		return _figure;
 		
@@ -26,4 +36,6 @@ public class State implements Cloneable {
 	protected Object clone() throws CloneNotSupportedException {
 		return super.clone();
 	}
+	
+	
 }

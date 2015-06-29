@@ -9,6 +9,10 @@ public class Model {
 	public static final int COLUMNS = 7;
 	Logic _logic;
 
+	public Logic getlogic() {
+		return _logic;
+	}
+
 	public Model() {
 		Field field = new Field(COLUMNS, ROWS);
 		State state = new State();
@@ -69,8 +73,17 @@ public class Model {
 	}
 
 	public boolean fullField() {
-		// TODO Auto-generated method stub
 		return _logic.fullField();
+	}
+
+	public void levelUp() {
+		_logic.levelUp();
+		
+	}
+
+	public void levelDown() {
+		_logic.levelDown();
+		
 	}
 
 }

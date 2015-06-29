@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 
 public class ColumnsScreen implements Screen {
 	
-	ColumnsStage _stage;
+	public ColumnsStage _stage;
 
 	@Override
 	public void show() {

@@ -8,6 +8,8 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 
 public class Box extends Actor {
 
+	public static int SIZE = 45;
+
 	static Texture[] textures = new Texture[9];
 
 	static Color[] colors = { Color.BLACK, Color.CYAN,
@@ -34,7 +36,6 @@ public class Box extends Actor {
 		return texture;
 	}
 
-	static final int SIZE = 25;
 
 	private Texture _texture;
 

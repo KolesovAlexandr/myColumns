@@ -6,6 +6,7 @@ public class View {
 	private static final int ORIGIN_X = 40;
 	private static final int ORIGIN_Y = 10;
 	private static final int ORIGIN_SCORE = 240;
+	private static final int ORIGIN_GAMEOVER = 120;
 	private static final int ORIGIN_LEVEL = 0;
 	private static final int ORIGIN_SL_Y = 20;
 
@@ -20,6 +21,15 @@ public class View {
 		drawFigure(state.getFigure().getData(), state.row, state.col);
 		showLevel(state.level);
 		showScore(state.score);
+		if (state._gameOver) {
+			showGameOver();
+		}
+		
+	}
+
+	private void showGameOver() {
+		drawString("GAME OVER", ORIGIN_GAMEOVER);
+		
 	}
 
 	private void showScore(int score) {
